@@ -22,7 +22,7 @@ function App() {
       //log that state actually changed back to false after 15sec
       console.log('15sec Ended Back to Home')
     }
-  });
+  }, [start]);
  
   return (
     //show the detect screen only when start is true
