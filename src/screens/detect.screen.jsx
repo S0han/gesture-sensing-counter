@@ -1,7 +1,7 @@
 export default function Detect() {
     return (
         <div>
-            Detection
+            Detect
         </div>
     );
 }
