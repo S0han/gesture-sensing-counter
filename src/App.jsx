@@ -12,7 +12,7 @@ export default function App() {
   //set default state of start button to false
   const [state, setState] = useState(STATES.IDLE);
 
-  //check if start button changed to true value
+  //check if start button changed to active enum
   useEffect(() => {
     if (state !== STATES.ACTIVE) {
       return;
