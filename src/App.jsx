@@ -29,8 +29,10 @@ export default function App() {
   return (
     //show the detect screen only when start is true
     <div>
-      {state === STATES.IDLE && <Home onStart={() => setState(STATES.ACTIVE)} />}
-      {state === STATES.ACTIVE && <Detect />}
+      {/* {state === STATES.IDLE && <Home onStart={() => setState(STATES.ACTIVE)} />}
+      {state === STATES.ACTIVE && <Detect />} */}
+
+      {state === STATES.IDLE && <Detect />}
     </div>
   );
 }
