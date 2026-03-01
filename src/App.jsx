@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Home from './screens/home.screen';
 import Detect from './screens/detect.screen';
+import Complete from './screens/complete.screen';
 
 export default function App() {
   //add enums to represent states within the timer window
@@ -16,6 +17,10 @@ export default function App() {
 
   //check if start button changed to active enum
   useEffect(() => {
+    if (state !== STATES.ACTIVE) {
+      return;
+    }
+
     if (isValid) {
       setState(STATES.COMPLETE);
       setIsValid(false);
@@ -34,7 +39,7 @@ export default function App() {
     //show screen depending on state enum
     <div>
       {state === STATES.IDLE && <Home onStart={() => setState(STATES.ACTIVE)} />}
-      {state === STATES.ACTIVE && <Detect valDetect={setIsValid} />}
+      {state === STATES.ACTIVE && <Detect valDetect={() => setIsValid(true)} />}
       {state === STATES.COMPLETE && <Complete returnHome={() => setState(STATES.IDLE)} />}
     </div>
   );

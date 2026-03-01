@@ -1,9 +1,9 @@
 import ValidGestButton from '../components/valid_gest_button.component'; 
 
-export default function Detect({ setIsValid }) {
+export default function Detect({ valDetect }) {
     return (
         <div className="flex h-screen items-center justify-center">
-            <ValidGestButton setIsValid={setIsValid} />
+            <ValidGestButton valDetect={valDetect} />
         </div>
     );
 }
