@@ -16,30 +16,26 @@ export default function App() {
 
   //check if start button changed to active enum
   useEffect(() => {
-    if (state !== STATES.ACTIVE) {
+    if (isValid) {
+      setState(STATES.COMPLETE);
+      setIsValid(false);
       return;
     }
 
     const timer = setTimeout(() => {
-      // if valid gesture detected prevent from going to id
-      if (isValid) {
-        setState(STATES.COMPLETE)
-        return;
-      }
       setState(STATES.IDLE);
     }, 15000);
 
 
-    return () => clearTimeout(timer)
+    return () => clearTimeout(timer);
   }, [state, isValid]);
 
   return (
-    //show the detect screen only when start is true
+    //show screen depending on state enum
     <div>
-      {/* {state === STATES.IDLE && <Home onStart={() => setState(STATES.ACTIVE)} />}
-      {state === STATES.ACTIVE && <Detect />} */}
-
-      {state === STATES.IDLE && <Detect valDetect={setIsValid} />}
+      {state === STATES.IDLE && <Home onStart={() => setState(STATES.ACTIVE)} />}
+      {state === STATES.ACTIVE && <Detect valDetect={setIsValid} />}
+      {state === STATES.COMPLETE && <Complete returnHome={() => setState(STATES.IDLE)} />}
     </div>
   );
 }
