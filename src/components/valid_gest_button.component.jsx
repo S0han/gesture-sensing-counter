@@ -1,6 +1,11 @@
-export default function ValidGestButton() {
+export default function ValidGestButton({ setIsValid }) {
+    const handleClick = () => {
+        console.log("valid gesture detected!")
+        setIsValid(true);
+    }
+    
     return (
-        <button className="px-6 py-3 bg-green-600 rounded">
+        <button onClick={handleClick} className="px-6 py-3 bg-green-600 rounded">
             Valid
         </button>
     );

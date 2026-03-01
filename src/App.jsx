@@ -7,10 +7,12 @@ export default function App() {
   const STATES = {
     IDLE: "IDLE",
     ACTIVE: "ACTIVE",
+    COMPLETE: "COMPLETE"
   };
 
   //set default state of start button to false
   const [state, setState] = useState(STATES.IDLE);
+  const [isValid, setIsValid] = useState(false);
 
   //check if start button changed to active enum
   useEffect(() => {
@@ -19,12 +21,17 @@ export default function App() {
     }
 
     const timer = setTimeout(() => {
+      // if valid gesture detected prevent from going to id
+      if (isValid) {
+        setState(STATES.COMPLETE)
+        return;
+      }
       setState(STATES.IDLE);
     }, 15000);
 
 
     return () => clearTimeout(timer)
-  }, [state])
+  }, [state, isValid]);
 
   return (
     //show the detect screen only when start is true
@@ -32,7 +39,7 @@ export default function App() {
       {/* {state === STATES.IDLE && <Home onStart={() => setState(STATES.ACTIVE)} />}
       {state === STATES.ACTIVE && <Detect />} */}
 
-      {state === STATES.IDLE && <Detect />}
+      {state === STATES.IDLE && <Detect valDetect={setIsValid} />}
     </div>
   );
 }
