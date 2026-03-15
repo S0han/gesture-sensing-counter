@@ -16,31 +16,32 @@ export default function App() {
   const [isValid, setIsValid] = useState(false);
 
   //check if start button changed to active enum
-  useEffect(() => {
-    if (state !== STATES.ACTIVE) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (state !== STATES.ACTIVE) {
+  //     return;
+  //   }
 
-    if (isValid) {
-      setState(STATES.COMPLETE);
-      setIsValid(false);
-      return;
-    }
+  //   if (isValid) {
+  //     setState(STATES.COMPLETE);
+  //     setIsValid(false);
+  //     return;
+  //   }
 
-    const timer = setTimeout(() => {
-      setState(STATES.IDLE);
-    }, 15000);
+  //   const timer = setTimeout(() => {
+  //     setState(STATES.IDLE);
+  //   }, 15000);
 
 
-    return () => clearTimeout(timer);
-  }, [state, isValid]);
+  //   return () => clearTimeout(timer);
+  // }, [state, isValid]);
 
   return (
     //show screen depending on state enum
     <div>
-      {state === STATES.IDLE && <Home onStart={() => setState(STATES.ACTIVE)} />}
+      {/* {state === STATES.IDLE && <Home onStart={() => setState(STATES.ACTIVE)} />}
       {state === STATES.ACTIVE && <Detect valDetect={() => setIsValid(true)} />}
-      {state === STATES.COMPLETE && <Complete returnHome={() => setState(STATES.IDLE)} />}
+      {state === STATES.COMPLETE && <Complete returnHome={() => setState(STATES.IDLE)} />} */}
+      <Detect />
     </div>
   );
 }
