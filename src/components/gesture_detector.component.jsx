@@ -59,17 +59,22 @@ export default function GestureDetector() {
 
 
     return (
-        <div>
-            <Webcam
-                ref={webcamRef}
-                style={{ position: 'absolute', left: 0, right: 0, zIndex: 9, width: 640, height: 480 }}
-            />
-            <canvas
-                ref={canvasRef}
-                width={640}
-                height={480}
-                style={{ position: 'absolute', left: 0, right: 0, zIndex: 10, width: 640, height: 480 }}
-            />
+        <div className="flex items-center justify-center h-screen">
+            <div className="relative">
+                <Webcam
+                    ref={webcamRef}
+                    className="z-10"
+                    style={{ width: 640, height: 480 }}
+                />
+
+                <canvas
+                    ref={canvasRef}
+                    width={640}
+                    height={480}
+                    className="absolute top-0 left-0 z-20"
+                    style={{ width: 640, height: 480 }}
+                />
+            </div>
         </div>
     );
 }
