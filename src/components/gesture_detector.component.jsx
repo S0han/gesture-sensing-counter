@@ -7,6 +7,7 @@ export default function GestureDetector() {
     const canvasRef = useRef(null);
     const [gestureRecognizer, setGestureRecognizer] = useState(null);
 
+    //mount the gesture recognizer so it can remain active in the application wihtout rerendering
     useEffect(() => {
         const initializeGestureRecognizer = async () => {
             const vision = await FilesetResolver.forVisionTasks(
@@ -28,7 +29,9 @@ export default function GestureDetector() {
 
     const onResults = useCallback((results) => {
         if (results.gestures.length > 0) {
-            console.log(results.gestures[0][0].categoryName);
+            if (results.gestures.score > 0.6 && results.gestures.categoryName == "Open_Palm") {
+                console.log("KANE...", results.gestures[0][0].categoryName);
+            }
         }
     }, []);
 
