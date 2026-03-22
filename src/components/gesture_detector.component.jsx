@@ -2,10 +2,13 @@ import { useRef, useEffect, useState, useCallback } from 'react';
 import Webcam from 'react-webcam';
 import { FilesetResolver, GestureRecognizer } from '@mediapipe/tasks-vision';
 
-export default function GestureDetector() {
+export default function GestureDetector({ valDetect }) {
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
+    const holdStartRef = useRef(null);
+    const hasTriggeredRef = useRef(false)
     const [gestureRecognizer, setGestureRecognizer] = useState(null);
+    const [validGestureTimerSuccess, setValidGestureTimerSuccess] = useState(false);
 
     //mount the gesture recognizer so it can remain active in the application wihtout rerendering
     useEffect(() => {
@@ -28,12 +31,38 @@ export default function GestureDetector() {
     }, []);
 
     const onResults = useCallback((results) => {
-        if (results.gestures.length > 0) {
-            if (results.gestures.score > 0.6 && results.gestures.categoryName == "Open_Palm") {
-                console.log("KANE...", results.gestures[0][0].categoryName);
+            console.log("KANE inside the gesture detect top level")
+            let gesture = results.gestures?.[0]?.[0];
+
+            //make sure the correct & its a high quality
+            if (gesture && gesture.score > 0.6 && gesture.categoryName == "Open_Palm") {
+                console.log("KANE...", gesture.categoryName);
+
+                if (!holdStartRef.current) {
+                    holdStartRef.current = Date.now();
+                }
+
+                const heldTime = Date.now() - holdStartRef.current;
+
+                if (heldTime >= 3000 && !hasTriggeredRef.current) {
+                    console.log("KANE... gesture valid");
+                    setValidGestureTimerSuccess(true);
+                    hasTriggeredRef.current = true;
+                    holdStartRef.current = null;
+                }
+            } else {
+                holdStartRef.current = null;
+                hasTriggeredRef.current = false;
             }
-        }
     }, []);
+
+    useEffect(() => {
+        if (!validGestureTimerSuccess) return;
+
+        valDetect();
+        setValidGestureTimerSuccess(false);
+
+    }, [validGestureTimerSuccess])
 
     useEffect(() => {
         if (!gestureRecognizer) return;
