@@ -1,13 +1,14 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
 import Webcam from 'react-webcam';
-import { FilesetResolver, GestureRecognizer } from '@mediapipe/tasks-vision';
+import { FilesetResolver, GestureRecognizer, FaceLandmarker } from '@mediapipe/tasks-vision';
 
 export default function GestureDetector({ valDetect }) {
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
     const holdStartRef = useRef(null);
     const hasTriggeredRef = useRef(false)
-    const [gestureRecognizer, setGestureRecognizer] = useState(null);
+    const [gestureRecognizer, setGestureRecognizer] = useState(null); // detects hand placement
+    const [faceLandmarker, setFaceLandmarker] = useState(null); // detects facial landmarks
     const [validGestureTimerSuccess, setValidGestureTimerSuccess] = useState(false);
 
     //mount the gesture recognizer so it can remain active in the application wihtout rerendering
@@ -17,6 +18,7 @@ export default function GestureDetector({ valDetect }) {
                 "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
             );
 
+            //for the hand
             const handRecognizer = await GestureRecognizer.createFromOptions(vision, {
                     baseOptions: {
                         modelAssetPath: "https://storage.googleapis.com/mediapipe-tasks/gesture_recognizer/gesture_recognizer.task",
@@ -25,7 +27,20 @@ export default function GestureDetector({ valDetect }) {
                     numHands: 1
                 }
             );
+
+            //for the face
+            const faceRecognizer = await FaceLandmarker.createFromOptions(vision, {
+                    baseOptions: {
+                        modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker.task",
+                    },
+                    runningMode: "VIDEO",
+                    outputFaceBlendShapes: true
+                }
+            );
+
+            //set the state for the hands and face once packages are featched
             setGestureRecognizer(handRecognizer);
+            setFaceLandmarker(faceRecognizer);
         };
         initializeGestureRecognizer();
     }, []);
