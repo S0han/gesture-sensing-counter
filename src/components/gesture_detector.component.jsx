@@ -34,7 +34,7 @@ export default function GestureDetector({ valDetect }) {
                         modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker.task",
                     },
                     runningMode: "VIDEO",
-                    outputFaceBlendShapes: true
+                    outputFaceBlendshapes: true
                 }
             );
 
