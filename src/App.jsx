@@ -17,33 +17,34 @@ export default function App() {
   const [count, setCount] = useState(0);
 
   //check if start button changed to active enum
-  useEffect(() => {
-    if (state !== STATES.ACTIVE) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (state !== STATES.ACTIVE) {
+  //     return;
+  //   }
 
-    if (isValid) {
-      setCount(count + 1);
-      console.log("KANE... count: ", count);
-      setState(STATES.COMPLETE);
-      setIsValid(false);
-      return;
-    }
+  //   if (isValid) {
+  //     setCount(count + 1);
+  //     console.log("KANE... count: ", count);
+  //     setState(STATES.COMPLETE);
+  //     setIsValid(false);
+  //     return;
+  //   }
 
-    const timer = setTimeout(() => {
-      setState(STATES.IDLE);
-    }, 15000);
+  //   const timer = setTimeout(() => {
+  //     setState(STATES.IDLE);
+  //   }, 15000);
 
 
-    return () => clearTimeout(timer);
-  }, [state, isValid, count]);
+  //   return () => clearTimeout(timer);
+  // }, [state, isValid, count]);
 
   return (
     //show screen depending on state enum
     <div>
-      {state === STATES.IDLE && <Home onStart={() => setState(STATES.ACTIVE)} />}
+      {/* {state === STATES.IDLE && <Home onStart={() => setState(STATES.ACTIVE)} />}
       {state === STATES.ACTIVE && <Detect valDetect={() => setIsValid(true)} />}
-      {state === STATES.COMPLETE && <Complete returnHome={() => setState(STATES.IDLE)} />}
+      {state === STATES.COMPLETE && <Complete returnHome={() => setState(STATES.IDLE)} />} */}
+      <Detect />
     </div>
   );
 }
