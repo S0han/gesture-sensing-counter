@@ -45,6 +45,47 @@ export default function GestureDetector({ valDetect }) {
         initializeGestureRecognizer();
     }, []);
 
+    const drawOverlay = (handResults, faceResults) => {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext("2d");
+
+        //these are the points we will use to map the hand and smile
+        const hand_map_pts = [0,4,8,12,16,20];
+        const smile_map_pts = [61, 291];
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        //draw hand
+        const hand = handResults.landmarks?.[0]; // ref the landmarks
+        if (hand) {
+            hand_map_pts.forEach(i => {
+                //get position of each point on canvas
+                const x = hand[i].x * canvas.width;
+                const y = hand[i].y * canvas.height;
+                ctx.fillStyle = "red" //color
+                //create circle to represent the point
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, 2 * Math.PI);
+                ctx.fill();
+            })
+        }
+
+        //draw smile
+        const face = faceResults.faceLandmarks?.[0]; // ref the landmarks
+        if (face) {
+            smile_map_pts.forEach(i => {
+                //get position of each point on canvas
+                const x = face[i].x * canvas.width;
+                const y = face[i].y * canvas.height;
+                ctx.fillStyle = "red" //color
+                //create circle to represent the point
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, 2 * Math.PI);
+                ctx.fill();
+            })
+        }
+    };
+
     const onResults = useCallback((results) => {
             //validate hand
             const handGesture = results.handResults.gestures?.[0]?.[0]; // hand gesture
@@ -113,6 +154,8 @@ export default function GestureDetector({ valDetect }) {
                         "handResults": handResults,
                         "faceResults": faceResults
                     }
+
+                    drawOverlay(handResults, faceResults); // draw the points for hand and smile
                     onResults(videoResults); // send the combines results to the onResult fcn
 
                     requestAnimationFrame(performDetectionLoop);

@@ -23,8 +23,10 @@ export default function App() {
     }
 
     if (isValid) {
-      setCount(count + 1);
-      console.log("KANE... count: ", count);
+      setCount(c => {
+        console.log("KANE... count:", c + 1)
+        return c + 1
+      });
       setState(STATES.COMPLETE);
       setIsValid(false);
       return;
